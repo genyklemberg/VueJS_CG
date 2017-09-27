@@ -1,0 +1,78 @@
+<div class="news-container">
+  <div class="news-item" v-if="news">
+    <div class="news-item-header">
+      <router-link tag="div" :to="`/user/${news.user.id}`" class="user" v-if="news.user">
+        <img :src="`/storage/user/${news.user.avatar}`" :alt="news.user.name" v-if="news.user.avatar"/>
+        <div class="info">
+          <span class="user">{{news.user.name}} <span class="shared" v-if="news.user_original">shared</span></span>
+          <span class="created-at">{{news.created_at | moment('calendar')}}</span>
+        </div>
+      </router-link>
+      <router-link tag="div" :to="`/user/${news.user_original.id}`" class="user" v-if="news.user_original">
+        <img :src="`/storage/user/${news.user_original.avatar}`" :alt="news.user_original.name" v-if="news.user_original.avatar"/>
+        <div class="info">
+          <span class="user">{{news.user_original.name}}</span>
+          <span class="created-at" v-if="news.original">{{news.original.created_at | moment('calendar')}}</span>
+        </div>
+      </router-link>
+    </div>
+    <div class="news-item-body" v-if="news.chapters">
+      <el-collapse v-model="chapters" v-if="$options.filters.chaptersTitle(news.chapters).length > 2">
+        <el-collapse-item title="Chapters" name="1" class="chapter-menu">
+          <div class="item" v-for="(chapter, index) in $options.filters.chaptersTitle(news.chapters)" v-scroll-to="`#chapter_${index}`">
+            {{chapter}}
+          </div>
+        </el-collapse-item>
+      </el-collapse>
+      <div class="chapter" v-for="(chapter, index) in $options.filters.chapters(news.chapters)" :id="`chapter_${index}`">
+        <div class="chapter-title">{{chapter.title}}</div>
+        <div class="chapter-content" v-html="chapter.content"></div>
+      </div>
+    </div>
+    <div class="news-item-body" v-else>
+      {{news.content}}
+    </div>
+    <div class="news-item-footer">
+      <div class="comments-count">
+        <i class="icon-bubble"></i>
+        <span>{{news.comment_count}}</span>
+      </div>
+      <div class="views-count">
+        <i class="icon-eye"></i>
+        <span>{{news.views_count}}</span>
+      </div>
+      <div class="like-count" @click="handleLike(news.id)">
+        <i class="icon-like"></i>
+        <span>{{news.like_count}}</span>
+      </div>
+      <div class="share-count" @click="handleShare(news.id)">
+        <i class="icon-rocket"></i>
+        <span>{{news.share_count}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="news-comments">
+    <p>Comments</p>
+    <div class="items">
+      <div class="news-comment" v-for="comment in comments" v-if="comments && comments.length > 0">
+        <div class="user" v-if="comment.user">
+          <img :src="`/storage/user/${comment.user.avatar}`" :alt="comment.user.name" v-if="comment.user.avatar"/>
+          <div class="info">
+            <span>{{comment.user.name}}</span>
+            <span class="created-at">{{comment.created_at | moment('calendar')}}</span>
+          </div>
+        </div>
+        <div class="news-comment-content">
+          {{comment.comment}}
+        </div>
+      </div>
+      <p v-else>There is no comments yet</p>
+    </div>
+    <el-form :model="form" @submit.native.prevent="handleComment">
+      <el-form-item prop="content" class="display-flex">
+        <el-input v-model="form.comment" placeholder="Leave your comment here..."></el-input>
+        <el-button type="success" native-type="submit">Create</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+</div>

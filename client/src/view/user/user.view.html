@@ -1,0 +1,103 @@
+<div class="user-page" v-if="profile">
+  <div class="user-info">
+    <img :src="`/storage/user/${profile.avatar}`" :alt="profile.name" class="avatar" v-if="profile.avatar"/>
+    <div class="user-stats">
+      <div class="user-name">{{profile.name}}</div><br/>
+      <div class="tags">
+        <el-tag v-for="tag in profile.tags" :key="tag.id">
+          <router-link :to="`/search/user/${tag.id}`">{{tag.name}}</router-link>
+        </el-tag>
+      </div>
+    </div>
+    <div class="user-actions">
+      <el-button
+        size="mini"
+        type="primary"
+        @click="refreshStats"
+        v-if="profile.id === user.id"
+        :disabled="new Date(user.manual_stats_update).getTime() - Date.now() > 0"
+        :title="user.manual_stats_update | moment('calendar')">
+        <i class="icon-refresh"></i> Refresh stats
+      </el-button>
+      <el-button
+        size="mini"
+        type="success"
+        @click="handleOpenEdit"
+        v-if="profile.id === user.id">
+        <i class="icon-pencil"></i> Edit
+      </el-button>
+    </div>
+  </div>
+  <div class="user-control" v-if="profile.id === user.id">
+    <div class="menu">
+      <div class="el-tabs">
+        <div class="el-tabs__header">
+          <div class="el-tabs__nav-wrap">
+            <div class="el-tabs__nav-scroll">
+              <div class="el-tabs__nav">
+                <router-link :to="`/user/${user.id}`" class="el-tabs__item">My profile</router-link>
+                <router-link :to="`/user/friends`" class="el-tabs__item">My friends</router-link>
+                <router-link :to="`/user/team`" class="el-tabs__item">My team</router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <router-view :key="$route.path"></router-view>
+  <el-dialog title="Edit your profile" v-model="modal.edit" size="small" top="5%" :modal-append-to-body="false">
+    <el-form :model="userForm.data" :rules="userForm.rules" ref="userEdit" labelPosition="top" @submit.native.prevent="handleEdit">
+      <el-form-item label="Avatar" prop="avatar" class="avatar-edit text-center">
+        <el-upload
+          action=""
+          :show-file-list="false"
+          :http-request="uploadAvatar">
+          <div>
+            <img :src="`/storage/user/${user.avatar}`" :alt="user.name" v-if="user && user.avatar" class="user-avatar">
+          </div>
+          <el-button size="small" type="primary">select file</el-button>
+          <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 200kb</div>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="Name" prop="name">
+        <el-input v-model="userForm.data.name" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="Email" prop="name">
+        <el-input v-model="userForm.data.email" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="Tags" prop="tags">
+        <el-select
+          v-model="userForm.data.tags"
+          multiple
+          filterable
+          allow-create
+          remote
+          placeholder="Type your tags for search"
+          :remote-method="handleTagsSearch"
+          :loading="tags.loading">
+          <el-option
+            v-for="item in tags.data"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <h3 class="delimiter"><span>Security</span></h3>
+      <el-form-item label="Current password">
+        <el-input placeholder="Enter current password" v-model="userForm.data.current_password" type="password"></el-input>
+      </el-form-item>
+      <el-form-item label="New password" prop="password">
+        <div class="password-change">
+          <el-input placeholder="Enter new password" v-model="userForm.data.password" type="password"></el-input>
+          <el-input placeholder="Repeat current password" v-model="userForm.data.password_repeat" type="password"></el-input>
+        </div>
+      </el-form-item>
+      <el-form-item class="text-center" >
+        <el-button type="success" :loading="userForm.progress" native-type="submit">Save</el-button>
+        <el-button :plain="true" type="info" @click="modal.edit = false">Cancel</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+</div>

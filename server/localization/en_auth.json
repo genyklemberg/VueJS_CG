@@ -1,0 +1,62 @@
+{
+  "header": {
+    "exit": "Exit",
+    "settings": "Settings"
+  },
+  "modal": {
+    "send_confirmation": "Confirm your email",
+    "message": "Check your e-mail, we've sent message with confirmation",
+    "settings": "settings",
+    "set_email": "Set your active email",
+    "send_again": "Send again",
+    "email": "Email",
+    "password": "Password",
+    "save_email": "Save"
+  },
+  "pages": {
+    "news": {
+      "addNews": {
+        "title": "Title",
+        "content": "Content",
+        "addMessage": "Add news"
+      }
+    },
+    "settings": {
+      "title": "Profile",
+      "email": "Email",
+      "password": "Password",
+      "old_password": "Old password",
+      "new_password": "New password",
+      "new_password_repeat": "Repeat new password",
+      "name": "Name",
+      "nickname": "Nickname",
+      "upload_avatar": "Upload avatar"
+    },
+    "notifications": {
+      "title": "Notifications"
+    }
+  },
+  "actions": {
+    "save": "Save",
+    "send": "Send",
+    "cancel": "Cancel",
+    "update": "Update",
+    "create": "Create",
+    "change": "Change",
+    "find": "Find",
+    "ignore": "Ignore",
+    "accept": "Accept",
+    "delete": "Delete",
+    "invite": "Invite",
+    "update_game_stats": "Update game stats"
+  },
+  "friend": {
+    "nickOrEmail": "Nickname / email"
+  },
+  "team": {
+    "name": "Team name"
+  },
+  "notification": {
+    "success": "Successfully"
+  }
+}

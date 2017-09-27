@@ -1,0 +1,14 @@
+<div v-if="profile">
+  <p>
+    <strong>Name:</strong> <br/>
+    {{profile.name}}
+  </p>
+  <p>
+    <strong>Registered:</strong> <br/>
+    {{profile.created_at | moment('calendar')}}
+  </p>
+  <p>
+    <strong>Steam profile:</strong> <br/>
+    <a :href="`https://steamcommunity.com/profiles/${profile.steam_id}`" target="_blank"><i class="icon-social-steam"></i></a>
+  </p>
+</div>

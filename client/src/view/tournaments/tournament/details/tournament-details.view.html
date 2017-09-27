@@ -1,0 +1,26 @@
+<div>
+  <div v-html="tournament.game_title"></div>
+  <div v-html="tournament.general_info"></div>
+  <div v-html="tournament.title"></div>
+  <div v-html="tournament.tournament_format"></div>
+
+  <div class="el-tabs">
+    <div class="el-tabs__header">
+      <div class="el-tabs__nav-wrap">
+        <div class="el-tabs__nav-scroll">
+          <div class="el-tabs__nav">
+            <router-link
+              v-for="tournamentLink of tournamentLinks"
+              :to="`/tournament/${id}${tournamentLink.name}`"
+              class="el-tabs__item"
+            >
+              {{tournamentLink.label}}
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   <router-view :tournament="tournament"></router-view>
+  </el-tabs>
+</div>

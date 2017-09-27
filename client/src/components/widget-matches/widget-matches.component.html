@@ -1,0 +1,55 @@
+<div class="matches-widget widget">
+  <div class="widget-header">
+    <div class="title">Matches</div>
+  </div>
+  <div class="widget-body" v-loading.body="loading">
+    <el-tabs v-model="activeTab" @tab-click="handleSwitch">
+      <el-tab-pane label="Current" name="current">
+        <div class="matches" v-for="match in matches.current">
+          <div class="match">
+            <div class="info">
+              <div class="team">
+                <span>{{match.compA_abbrev}}</span>
+                <img :src="match.compA_flag" alt=""/>
+              </div>
+              <div class="seporator">
+                vs
+              </div>
+              <div class="team">
+                <span>{{match.compB_abbrev}}</span>
+                <img :src="match.compB_flag" alt=""/>
+              </div>
+            </div>
+            <div class="date">{{match.start * 1000 | moment("from", "now")}}</div>
+          </div>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="Future" name="future">
+        <div class="matches" v-for="match in matches.future">
+          <div class="match" v-if="match.compA_abbrev">
+            <div class="info">
+              <div class="team">
+                <span>{{match.compA_abbrev}}</span>
+                <img :src="match.compA_flag" alt=""/>
+              </div>
+              <div class="seporator">
+                vs
+              </div>
+              <div class="team">
+                <span>{{match.compB_abbrev}}</span>
+                <img :src="match.compB_flag" alt=""/>
+              </div>
+            </div>
+            <div class="date">{{match.start * 1000 | moment("from", "now")}}</div>
+          </div>
+          <div v-else>
+            {{match.title}}
+          </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+  <div class="widget-footer">
+    <router-link to="/tournaments" class="full-button">All tournaments</router-link>
+  </div>
+</div>

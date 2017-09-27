@@ -1,0 +1,11 @@
+<div>
+  <span>Время начала турнира </span>
+  <div> {{getTournamentDate()}}</div>
+
+  <span>Общая информация </span>
+  <div v-html="tournament.general_info"></div>
+
+  <span>Информация матча </span>
+  <div v-html="tournament.tournament_format"></div>
+
+</div>

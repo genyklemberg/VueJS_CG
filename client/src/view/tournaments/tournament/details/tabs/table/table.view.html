@@ -1,0 +1,38 @@
+<div>
+  <template>
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tab-pane label="На вылет" name="first">
+        <div id="tournament-about-list">
+          Вылет
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="Таблица" name="second">
+        <template>
+          <el-table
+            :data="tournament.teams"
+            style="width: 100%"
+          >
+            <el-table-column
+              prop="name"
+              label="Name"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="name_en"
+              label="Country"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="logo"
+              label="Logo"
+            >
+              <template scope="scope">
+                <img :src="scope.row.logo" />
+              </template>
+            </el-table-column>
+          </el-table>
+        </template>
+      </el-tab-pane>
+    </el-tabs>
+  </template>
+</div>

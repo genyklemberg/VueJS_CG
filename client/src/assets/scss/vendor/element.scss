@@ -1,0 +1,194 @@
+@import "../../css/theme/index";
+
+.el-dialog, .el-message-box {
+  background: lighten($backgroundColor, 5%);
+  .el-dialog__title {
+    color: lighten($backgroundColor, 25%);
+  }
+  .el-message-box__content {
+    color: lighten($backgroundColor, 40%);
+  }
+}
+
+.el-input__inner {
+  color: $textColor;
+  &:hover, &:focus, &:active {
+    border-color: lighten($backgroundColor, 35%);
+  }
+}
+
+.el-select-dropdown, .el-dropdown-menu, .el-input__inner {
+  background-color: lighten($backgroundColor, 20%);
+  border-color: lighten($backgroundColor, 20%);
+}
+
+.el-dropdown-menu__item--divided:before {
+  background-color: lighten($backgroundColor, 20%);
+}
+
+.el-dialog--tiny {
+  width: 350px;
+}
+
+.el-dialog__footer {
+  padding-top: 0;
+}
+
+.user-action {
+  .avatar {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+    width: 32px;
+  }
+}
+
+.el-form {
+  .el-form-item:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.el-form-item.display-flex {
+  .el-form-item__content {
+    @include display-flex();
+    > .el-input {
+      margin-right: $spacing / 2;
+    }
+  }
+}
+
+.el-tabs__header {
+  border-bottom: 1px solid lighten($backgroundColor, 15%);
+}
+
+.el-tabs__item.is-active, .el-tabs__item:hover {
+  color: $blueColor;
+}
+
+.el-tabs__active-bar {
+  background-color: $blueColor;
+}
+
+.el-tabs {
+  background: rgba(lighten($backgroundColor, 15%), 0.4);
+}
+
+.el-table tr {
+  background-color: #333449;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background-color: #333449;
+}
+
+.el-table {
+  background-color: #292c3d;
+}
+
+.el-form-item__label {
+  color: $textColor;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped td {
+  background-color: #242534;
+}
+
+.el-upload {
+  img {
+    width: 100%;
+  }
+}
+.el-loading-mask {
+  background-color: rgba(79, 81, 111, 0.5);
+}
+
+.el-checkbox {
+  color: $textColor;
+}
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected.hover {
+  background-color: #62698e;
+  color: $textColor;
+}
+.el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
+  color: $textColor;
+  background-color: #575d7d;
+}
+
+.tags {
+  .el-tag:not(:last-child) {
+    margin-right: $spacing / 3;
+  }
+}
+
+
+.checkbox-form {
+  .el-checkbox {
+    display: block;
+    & + .el-checkbox {
+      margin: 0;
+    }
+  }
+}
+
+.el-form-item__content .el-select {
+  width: 100%;
+}
+
+.el-tag--primary {
+  color: $textColor;
+}
+.el-select-dropdown__item {
+  color: $textColor;
+}
+.el-select-dropdown, .el-dropdown-menu, .el-input__inner {
+  color: $textColor;
+}
+.el-select__input {
+  color: $textColor;
+}
+
+.el-radio-group {
+  .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+    color: $textColor;
+    background-color: #3e425c;
+    border-color: #3e425c;
+    box-shadow: -1px 0 0 0 #333449;
+  }
+  .el-radio-button__inner {
+    background: #333449;
+    border: 1px solid #3e425c;
+    color: $textColor;
+  }
+}
+.el-radio-button:first-child .el-radio-button__inner {
+  border-left: 1px solid #3e425c;
+}
+.el-button--primary.is-plain {
+  color: $textColor;
+  background-color: transparent;
+  border: 2px solid $backgroundColor;
+  padding: 9px 15px;
+  &:hover {
+    border-color: #3e425c;
+    color: $textColor;
+    background-color: transparent;
+  }
+}
+
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item__header {
+  background: $backgroundColor;
+  border: none;
+}
+.el-collapse-item__wrap {
+  background: $backgroundColor;
+  border: none;
+}
+
+.el-collapse-item__content {
+  color: #fff;
+  padding: 0 10px 15px;
+}

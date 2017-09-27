@@ -1,0 +1,42 @@
+<div class="sidebar-page">
+  <div class="sidebar-container">
+    <el-table
+      :data="friends"
+      class="user-list"
+      @cell-click='handleOpen'
+      stripe>
+      <el-table-column
+        prop="friend"
+        label="Friend">
+        <template scope="scope">
+          <div class="user-avatar" v-if="scope.row.friend.avatar">
+            <img :src="`/storage/user/${scope.row.friend.avatar}`" :alt="scope.row.friend.name"/>
+          </div>
+          <div class="user-name">{{scope.row.friend.name}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="created_at"
+        label="Request sent">
+        <template scope="scope">
+          <div class="create-date">{{scope.row.created_at | moment("calendar")}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label=""
+        class-name="text-right">
+        <template scope="scope">
+            <el-button
+              size="mini"
+              type="danger"
+              @click.stop="removeFriend(scope.row.friend.id)">
+              <i class="icon-user-unfollow"></i>
+            </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+  <div class="sidebar">
+    <widget-friends></widget-friends>
+  </div>
+</div>

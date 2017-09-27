@@ -1,0 +1,8 @@
+<div>
+  <a v-if="tournament.youtube_link" :href="tournament.youtube_link">Youtube</a>
+  <div v-if="tournament.casters">
+    <div v-for="caster in tournament.casters">
+      <a :href="caster.link">Twitch</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+{
+  "header": {
+    "title": "GCL",
+    "login": "Логин",
+    "registration": "Регистрация"
+  },
+  "pages": {
+    "news": {
+      "title": "Новости",
+      "backBtn": "Назад",
+      "whoShared": "Кто поделился"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+<el-row :gutter="20">
+  <el-col :span="6">
+    <div> Призовой фонд: {{tournament.prizepool_tot}}</div>
+  </el-col>
+  <el-col :span="18">
+    <span v-if="tournament.prizepool_1"> Призовой пул 1: {{tournament.prizepool_1}}</span>
+    <span v-if="tournament.prizepool_2"> Призовой пул 2: {{tournament.prizepool_2}}</span>
+    <span v-if="tournament.prizepool_3"> Призовой пул 3: {{tournament.prizepool_3}}</span>
+  </el-col>
+</el-row>

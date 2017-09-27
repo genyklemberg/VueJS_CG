@@ -1,0 +1,57 @@
+<div class="page-content">
+
+  <div class="page-header">
+    <h2>Notifications</h2>
+  </div>
+
+  <el-table
+    :data="notifications"
+    class="user-list"
+    @cell-click='handleOpen'
+    stripe>
+    <el-table-column
+      prop="friend"
+      label="Sender">
+      <template scope="scope">
+        <div class="user-avatar" v-if="scope.row.author.avatar">
+          <img :src="`/storage/user/${scope.row.author.avatar}`" :alt="scope.row.author.name"/>
+        </div>
+        <div class="user-name">{{scope.row.author.name}}</div>
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="title"
+      label="Title">
+    </el-table-column>
+    <el-table-column
+      prop="message"
+      label="Message">
+    </el-table-column>
+    <el-table-column
+      prop="created_at"
+      label="Date">
+      <template scope="scope">
+        <div class="create-date">{{scope.row.created_at | moment("calendar")}}</div>
+      </template>
+    </el-table-column>
+    <el-table-column
+      class-name="text-right">
+      <template scope="scope">
+        <el-button
+          size="mini"
+          type="success"
+          @click.stop="acceptFriendInvite(scope.row.friendInvite.id)"
+          v-if="scope.row.friendInvite && !scope.row.friendInvite.confirmed">
+          <i class="icon-check"></i>
+        </el-button>
+        <el-button
+          size="mini"
+          type="success"
+          @click.stop="acceptTeamInvite(scope.row.teamInvite.id)"
+          v-if="scope.row.teamInvite && !scope.row.teamInvite.confirmed">
+          <i class="icon-check"></i>
+        </el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</div>

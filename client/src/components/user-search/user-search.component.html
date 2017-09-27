@@ -1,0 +1,9 @@
+<el-autocomplete
+  v-model="name"
+  icon="search"
+  class="search-user"
+  custom-item="user-item"
+  :fetch-suggestions="handleSearch"
+  placeholder="Type user name..."
+  @select="handleSelect"
+></el-autocomplete>

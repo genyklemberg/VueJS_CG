@@ -1,0 +1,125 @@
+<div class="news-container">
+  <div class="news-create" v-if="authenticated && create">
+    <p>New publication</p>
+    <el-form :model="form" @submit.native.prevent="handleCreate">
+      <el-form-item prop="content" class="display-flex">
+        <el-input v-model="form.content"></el-input>
+        <el-dropdown split-button type="success" @click="handleCreate" @command="handleCommand">
+          Create
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="create">Full mode</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </el-form-item>
+    </el-form>
+  </div>
+  <div class="news-item" v-for="news in data">
+    <div class="news-item-header">
+      <router-link tag="div" :to="`/user/${news.user.id}`" class="user" v-if="news.user">
+        <img :src="`/storage/user/${news.user.avatar}`" :alt="news.user.name" v-if="news.user.avatar"/>
+        <div class="info">
+          <span class="user">{{news.user.name}} <span class="shared" v-if="news.user_original">shared</span></span>
+          <span class="created-at">{{news.created_at | moment('calendar')}}</span>
+        </div>
+      </router-link>
+      <router-link tag="div" :to="`/user/${news.user_original.id}`" class="user" v-if="news.user_original">
+        <img :src="`/storage/user/${news.user_original.avatar}`" :alt="news.user_original.name" v-if="news.user_original.avatar"/>
+        <div class="info">
+          <span class="user">{{news.user_original.name}}</span>
+          <span class="created-at" v-if="news.original">{{news.original.created_at | moment('calendar')}}</span>
+        </div>
+      </router-link>
+    </div>
+    <div class="news-item-body" v-if="news.chapters">
+      <div class="news-cover">
+        <div class="cover-tags tags" v-if="news.tags && news.tags.length > 0">
+          <el-tag v-for="tag in news.tags" :key="tag.id">{{tag.name}}</el-tag>
+        </div>
+        <div class="cover-title">{{news.chapters | cover('title')}}</div>
+        <div class="cover-content">
+          <span v-html="$options.filters.cover(news.chapters, 'content')"></span>
+          <router-link :to="`/news/${news.id}`">continue reading</router-link>
+        </div>
+        <div class="cover-background" :style="`background-image: url(${$options.filters.cover(news.chapters, 'preview')})`"></div>
+      </div>
+    </div>
+    <div class="news-item-body" v-html="news.content" v-else></div>
+    <div class="news-item-footer">
+      <div class="comments-count" @click="handleOpen(news.id)">
+        <i class="icon-bubble"></i>
+        <span>{{news.comment_count}}</span>
+      </div>
+      <div class="views-count" @click="handleOpen(news.id)">
+        <i class="icon-eye"></i>
+        <span>{{news.views_count}}</span>
+      </div>
+      <div class="like-count" @click="handleLike(news.id)">
+        <i class="icon-like"></i>
+        <span>{{news.like_count}}</span>
+      </div>
+      <div class="share-count" @click="handleShare(news.id)">
+        <i class="icon-rocket"></i>
+        <span>{{news.share_count}}</span>
+      </div>
+    </div>
+  </div>
+  <el-dialog
+    title="Create publication"
+    :visible.sync="editorVisible"
+    size="small"
+    :before-close="handleClose">
+    <div class="news-editor">
+      <div class="item display-flex">
+        <el-select v-model="form.game_id" class="full-width">
+          <el-option
+            v-for="item in games"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+        <el-button type="success" @click="addChapter">Add chapter</el-button>
+      </div>
+      <div class="item">
+        <el-select class="full-width"
+          v-model="form.tags"
+          multiple
+          filterable
+          allow-create
+          remote
+          placeholder="Type post tags"
+          :remote-method="handleTagsSearch"
+          :loading="tags.loading">
+          <el-option
+            v-for="item in tags.data"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id">
+          </el-option>
+        </el-select>
+      </div>
+      <div class="item chapter" v-for="(chapter, index) in form.chapters">
+        <div class="chapter-title">
+          <el-input
+            size="mini"
+            placeholder="Chapter title"
+            v-model="chapter.title">
+          </el-input>
+          <el-button type="danger" size="mini" @click="form.chapters.splice(index, 1)">
+            <i class="el-icon-delete"></i>
+          </el-button>
+          <el-checkbox v-model="chapter.cover">Cover</el-checkbox>
+        </div>
+        <quill-editor v-model="chapter.content"
+                      ref="editor"
+                      @ready="handleEditorInit(index)"
+                      :options="editorOption">
+        </quill-editor>
+      </div>
+    </div>
+    <span slot="footer" class="dialog-footer">
+    <el-button :plain="true" type="primary" @click="editorVisible = false">Cancel</el-button>
+    <el-button type="primary" @click="handleCreate(true)">Confirm</el-button>
+  </span>
+  </el-dialog>
+</div>

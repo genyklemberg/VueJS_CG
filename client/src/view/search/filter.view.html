@@ -1,0 +1,7 @@
+<div class="sidebar-page">
+  <div v-for="user in users">
+    <span><router-link :to="`/user/${user.id}`">Имя {{user.name}}</router-link></span>
+    <img :src="user.avatar"/>
+    <span v-for="tag in user.tags"><router-link :to="`/search/user/${tag.id}`">{{tag.name}}</router-link></span>
+  </div>
+</div>

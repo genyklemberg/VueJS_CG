@@ -1,0 +1,49 @@
+<div class="page-content">
+
+  <div class="page-header">
+    <h2>Tournaments</h2>
+    <div class="page-actions">
+      <el-radio-group v-model="activeButton" @change="handleChangeActiveButton()">
+        <el-radio-button
+          :label="TournamentKey.ONGOING"
+        >{{tournamentOptions[TournamentKey.ONGOING]}}</el-radio-button>
+        <el-radio-button
+          :label="TournamentKey.UPCOMING"
+        >{{tournamentOptions[TournamentKey.UPCOMING]}}</el-radio-button>
+        <el-radio-button
+          :label="TournamentKey.PAST"
+        >{{tournamentOptions[TournamentKey.PAST]}}</el-radio-button>
+      </el-radio-group>
+    </div>
+  </div>
+
+  <el-table
+    :data="tournament"
+    v-loading.body="loading"
+    border
+    style="width: 100%"
+  >
+    <el-table-column
+      prop="title"
+      label="Name"
+    >
+      <template scope="scope">
+        <router-link :to="`/tournament/${scope.row.id}`">{{scope.row.title}}</router-link>
+      </template>
+    </el-table-column>
+    <el-table-column
+      prop="total"
+      label="Prize fund"
+      width="180"
+    >
+    </el-table-column>
+    <el-table-column
+      prop="start"
+      label="Date"
+    >
+      <template scope="scope">
+        <span>{{getTournamentDate(scope.row.start)}}</span>
+      </template>
+    </el-table-column>
+  </el-table>
+</div>

@@ -1,0 +1,143 @@
+<div class="page-content">
+  <div class="team-container" v-if="team">
+    <div>
+      <img :src="`/storage/team/${team.avatar}`" :alt="team.name" v-if="team.avatar" class="team-avatar">
+      <div class="team-info">
+        <span>{{team.name}}</span>
+      </div>
+      <div class="team-actions">
+        <el-button
+          size="mini"
+          type="success"
+          v-if="accessEdit"
+          @click="modal.edit = true">
+          <i class="icon-pencil"></i> Edit
+        </el-button>
+        <el-button
+          size="mini"
+          type="success"
+          v-if="accessManage"
+          @click="modal.invite = true">
+          <i class="icon-user-follow"></i> Invite user
+        </el-button>
+      </div>
+    </div>
+    <br/>
+    <el-table
+      :data="team.users"
+      class="user-list"
+      @cell-click='handleOpen'
+      stripe>
+      <el-table-column
+        label="Mate">
+        <template scope="scope">
+          <div class="user-avatar" v-if="scope.row.avatar">
+            <img :src="`/storage/user/${scope.row.avatar}`" :alt="scope.row.name"/>
+          </div>
+          <div class="user-name">{{scope.row.name}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label=""
+        class-name="text-right">
+        <template scope="scope">
+          <el-button
+            size="mini"
+            type="success"
+            v-if="accessEdit"
+            @click.stop="handleMateOpen(scope.row.id)">
+            <i class="icon-pencil"></i>
+          </el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            v-if="scope.row.id !== team.owner_id && accessManage"
+            @click.stop="removeMate(scope.row.id)">
+            <i class="icon-user-unfollow"></i>
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+  <div class="item-create" v-else-if="!user.team">
+    <el-form :model="teamForm.data" :rules="teamForm.rules" ref="teamCreate" labelPosition="top"
+             class="demo-ruleForm" @submit.native.prevent="handleTeamCreate">
+      <el-form-item label="Team name" prop="name" class="display-flex">
+        <el-input v-model="teamForm.data.name" auto-complete="off"></el-input>
+        <el-button type="success" native-type="submit" :loading="teamForm.progress">Create team</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
+  <el-dialog title="Invite user to team" v-model="modal.invite" size="tiny" top="5%" :modal-append-to-body="false">
+    <el-form :model="teamInviteForm.data" :rules="teamInviteForm.rules" ref="teamInvite" labelPosition="top"
+             class="demo-ruleForm" @submit.native.prevent="handleInvite">
+      <el-form-item label="User name" prop="user_id" class="display-flex">
+        <user-search @select="handleUserSelect"></user-search>
+      </el-form-item>
+      <el-form-item label="Invite message" prop="message">
+        <el-input v-model="teamInviteForm.data.message" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item class="text-center" >
+        <el-button type="success" :loading="teamInviteForm.progress" native-type="submit">Send</el-button>
+        <el-button :plain="true" type="info" @click="modal.invite = false">Cancel</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+  <el-dialog title="Edit team" v-model="modal.edit" size="tiny" top="5%" :modal-append-to-body="false">
+    <el-form :model="teamForm.data" :rules="teamForm.rules" ref="teamEdit" labelPosition="top"
+             class="demo-ruleForm" @submit.native.prevent="handleEdit">
+      <el-form-item label="Team logo" prop="logo" class="avatar-edit">
+        <el-upload
+          action=""
+          :show-file-list="false"
+          :http-request="uploadAvatar">
+          <div>
+            <img :src="`/storage/team/${team.avatar}`" :alt="team.name" v-if="team && team.avatar" class="team-avatar">
+          </div>
+          <el-button size="small" type="primary">select file</el-button>
+          <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 200kb</div>
+        </el-upload>
+      </el-form-item>
+      <el-form-item label="Team name" prop="name">
+        <el-input v-model="teamForm.data.name" auto-complete="off"></el-input>
+      </el-form-item>
+      <el-form-item label="Team tag" prop="name">
+        <el-select
+          v-model="userForm.data.tags"
+          multiple
+          filterable
+          allow-create
+          remote
+          placeholder="Type your tags for search"
+          :remote-method="handleTeamTagsSearch"
+          :loading="tags.loading">
+          <el-option
+            v-for="item in tags.data"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item class="text-center" >
+        <el-button type="success" :loading="teamForm.progress" native-type="submit">Save</el-button>
+        <el-button :plain="true" type="info" @click="modal.edit = false">Cancel</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+  <el-dialog title="Edit team mate" v-model="modal.editMate" size="tiny" top="5%" :modal-append-to-body="false">
+    <el-form :model="teamMate.data" ref="teamMate" labelPosition="top" @submit.native.prevent="handleMateEdit">
+      <el-form-item label="Access rights" class="checkbox-form">
+        <el-checkbox v-model="teamMate.data.manage">Manage (Invite / Kick)</el-checkbox>
+        <el-checkbox v-model="teamMate.data.edit">Edit (Edit access/ Information)</el-checkbox>
+        <el-checkbox v-model="teamMate.data.posting">Posting (Create new posts)</el-checkbox>
+      </el-form-item>
+      <el-form-item class="text-center">
+        <el-button type="success" :loading="teamMate.progress" native-type="submit">Save</el-button>
+        <el-button :plain="true" type="info" @click="modal.editMate = false">Cancel</el-button>
+      </el-form-item>
+    </el-form>
+  </el-dialog>
+</div>

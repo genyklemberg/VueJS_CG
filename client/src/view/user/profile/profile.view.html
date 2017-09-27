@@ -1,0 +1,20 @@
+<div v-if="id">
+  <div class="user-control">
+    <div class="menu">
+      <div class="el-tabs">
+        <div class="el-tabs__header">
+          <div class="el-tabs__nav-wrap">
+            <div class="el-tabs__nav-scroll">
+              <div class="el-tabs__nav">
+                <router-link :to="`/user/${id}`" class="el-tabs__item" exact>Feed</router-link>
+                <router-link :to="`/user/${id}/info`" class="el-tabs__item">Information</router-link>
+                <router-link :to="`/user/${id}/stats`" class="el-tabs__item">Stats</router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <router-view :key="$route.path"></router-view>
+</div>

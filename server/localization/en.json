@@ -1,0 +1,14 @@
+{
+  "header": {
+    "title": "GCL",
+    "login": "Login",
+    "registration": "registration"
+  },
+  "pages": {
+    "news": {
+      "title": "News",
+      "backBtn": "Back",
+      "whoShared": "Who shared"
+    }
+  }
+}

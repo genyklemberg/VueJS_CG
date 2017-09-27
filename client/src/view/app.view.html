@@ -1,0 +1,122 @@
+<div class="app-content dota">
+  <div class="wrapper">
+    <div class="header">
+      <div class="header-container container">
+        <div class="game-selector">
+          <el-select v-model="game">
+            <el-option
+              v-for="item in games"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div class="logo">
+          <router-link to="/">Cyber Gates</router-link>
+        </div>
+        <div class="user-area">
+          <div class="user-action" v-if="authenticated">
+            <el-dropdown @command="handleCommand">
+              <span class="el-dropdown-link">
+                <img :src="`/storage/user/${user.avatar}`" :alt="user.name" class="avatar" v-if="user.avatar"/> {{user.name}} <i class="el-icon-caret-bottom el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="profile">Profile</el-dropdown-item>
+                <el-dropdown-item command="exit" divided>Exit</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+          <el-button type="info" @click="modal.login = true" v-else>Login</el-button>
+        </div>
+      </div>
+    </div>
+    <div class="router-container">
+      <div class="navigation-sidebar">
+        <ul>
+          <li><router-link to="/" exact><i class="icon-home"></i></router-link></li>
+          <li v-if="authenticated"><router-link to="/user"><i class="icon-user"></i></router-link></li>
+          <li v-if="authenticated">
+            <el-badge :value="notificationsCount" :max="10" class="item">
+              <router-link to="/updates"><i class="icon-bubbles"></i></router-link>
+            </el-badge>
+          </li>
+          <li><router-link to="/tournaments"><i class="icon-trophy"></i></router-link></li>
+          <li><router-link to="/statistic"><i class="icon-chart"></i></router-link></li>
+        </ul>
+      </div>
+      <div class="router-content">
+        <router-view></router-view>
+      </div>
+    </div>
+  </div>
+  <el-dialog
+    title="Authorization"
+    :visible.sync="modal.login"
+    class="login-modal"
+    size="tiny">
+    <div>
+      <el-form :model="modal.form" label-position="top" @submit.native.prevent="handleLogin">
+        <el-form-item>
+          <el-input v-model="modal.form.email" auto-complete="off" placeholder="Email"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="modal.form.password" auto-complete="off" placeholder="Password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item class="text-center">
+          <el-button type="success" nativeType="submit">Login</el-button>
+          <el-button type="info" @click="modal.registration = true">Registration</el-button>
+        </el-form-item>
+      </el-form>
+      <div class="text-center social">
+        <a href="/auth/steam" class="el-button el-button--primary"><i class="icon-social-steam"></i> Login with steam</a>
+      </div>
+    </div>
+  </el-dialog>
+  <el-dialog
+    title="Registration"
+    :visible.sync="modal.registration"
+    class="registration-modal"
+    size="tiny">
+    <div>
+      <el-form :model="modal.form" label-position="top" @submit.native.prevent="handleRegistration">
+        <el-form-item>
+          <el-input v-model="modal.form.name" auto-complete="off" placeholder="Name"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="modal.form.email" auto-complete="off" placeholder="Email"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="modal.form.password" auto-complete="off" placeholder="Password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="modal.form.confirm_password" auto-complete="off" placeholder="Confirm password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item class="text-center">
+          <el-button type="success" nativeType="submit">Create an account</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </el-dialog>
+  <el-dialog
+    v-if="authenticated"
+    title="Finish registration"
+    :visible.sync="modal.confirm"
+    class="login-modal"
+    size="tiny">
+    <div>
+      <el-form :model="modal.form" label-position="top" @submit.native.prevent="handleConfirm">
+        <el-form-item>
+          <el-input v-model="modal.form.email" auto-complete="off" placeholder="Valid email"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-input v-model="modal.form.password" auto-complete="off" placeholder="Password" type="password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="success" nativeType="submit">Confirm</el-button>
+          <el-button @click="modal.confirm = false">Cancel</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </el-dialog>
+</div>

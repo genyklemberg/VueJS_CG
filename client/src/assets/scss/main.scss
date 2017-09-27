@@ -1,0 +1,20 @@
+/* Drop default browser style reset */
+@import "reset";
+
+/* Fonts */
+@import "../fonts/muli/font.css";
+
+/* Styles dependency declaration */
+@import "mixins";
+@import "variables";
+
+/* Vendor styles */
+@import "vendor/element";
+@import "vendor/nprogress";
+@import "vendor/loaders";
+@import "vendor/simple-line-icons";
+@import "vendor/ionicons/ionicons";
+@import "vendor/optiscroll";
+
+/* App styles */
+@import "app";

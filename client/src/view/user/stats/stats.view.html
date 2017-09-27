@@ -1,0 +1,48 @@
+<div v-if="profile && stats">
+  <div class="flex-block">
+    <p>
+      <strong>Total games:</strong> <br/>
+      {{stats.win + stats.lose}}
+    </p>
+    <p>
+      <strong>Win rate:</strong> <br/>
+      {{Number(stats.win / (stats.win + stats.lose) * 100).toFixed(2)}}
+    </p>
+    <p>
+      <strong>Wins:</strong> <br/>
+      {{stats.win}}
+    </p>
+    <p>
+      <strong>Loses:</strong> <br/>
+      {{stats.lose}}
+    </p>
+    <p>
+      <strong>Solo MMR:</strong> <br/>
+      {{stats.solo_mmr}}
+    </p>
+    <p>
+      <strong>Party mmr:</strong> <br/>
+      {{stats.party_mmr}}
+    </p>
+  </div>
+  <el-table
+    :data="heroStats"
+    class="user-list"
+    stripe>
+    <el-table-column
+      label="Hero">
+      <template scope="scope">
+        <div class="user-avatar" v-if="scope.row.hero.img">
+          <img :src="`https://api.opendota.com${scope.row.hero.img}`" :alt="scope.row.hero.name"/>
+        </div>
+        <div class="user-name">{{scope.row.hero.name}}</div>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="Win rate">
+      <template scope="scope">
+        <div class="user-name">{{scope.row | winRate}}</div>
+      </template>
+    </el-table-column>
+  </el-table>
+</div>

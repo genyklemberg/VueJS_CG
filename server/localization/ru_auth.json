@@ -1,0 +1,49 @@
+{
+  "header": {
+    "exit": "Выход",
+    "settings": "Настройки"
+  },
+  "modal": {
+    "send_confirmation": "Подтвердите свою почту",
+    "message": "На вашу почту отправлено сообщение с подтверждением",
+    "settings": "настройках",
+    "set_email": "Укажите рабочий адрес эл. почты",
+    "send_again": "Отправить еще раз",
+    "email": "Почта",
+    "password": "Пароль",
+    "save_email": "Сохранить"
+  },
+  "pages": {
+    "news": {
+      "addNews": {
+        "title": "Заглавие",
+        "content": "Описание",
+        "addMessage": "Добавить новость"
+      }
+    },
+    "settings": {
+      "title": "Профиль",
+      "email": "Эл. почта",
+      "password": "Пароль",
+      "old_password": "Старый пароль",
+      "new_password": "Новый пароль",
+      "new_password_repeat": "Повторите новый пароль",
+      "name": "Имя",
+      "nickname": "Игровой ник",
+      "upload_avatar": "Загрузить аватар"
+    }
+  },
+  "actions": {
+    "save": "Сохранить",
+    "send": "Отправить",
+    "cancel": "Отмена",
+    "update": "Обновить",
+    "change": "Изменить",
+    "delete": "Удалить",
+    "find": "Найти",
+    "update_game_stats": "Обновить игровую статистику"
+  },
+  "friend": {
+    "nickOrEmail": "Никнейм или email"
+  }
+}
